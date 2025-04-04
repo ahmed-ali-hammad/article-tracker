@@ -10,6 +10,7 @@ sqlalchemy = "*"
 pydantic = "*"
 pydantic-settings = "*"
 flask-sqlalchemy = "*"
+psycopg2 = "*"
 
 [dev-packages]
 isort = "*"
@@ -18,6 +19,7 @@ flake8 = "*"
 pytest = "*"
 pytest-asyncio = "*"
 pytest-mock = "*"
+watchdog = "*"
 
 [requires]
 python_version = "3.13"

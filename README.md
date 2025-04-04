@@ -54,7 +54,8 @@ $ pipenv shell  # spawns a shell within the virtualenv
 # Load environments variables
 $ source ./config/.env.example
 
-$ flask --app src/api/main run --debug
+$ python run.py
+$ watchmedo auto-restart --pattern="*.py" --recursive -- python run.py  # to reload on save
 ```
 
 - [API Docs]()
