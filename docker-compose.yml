@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
     container_name: article-tracker-dev
     ports:
-      - '4444:8000'
+      - '5555:5000'
     volumes:
       - ./:/code/
     command: 'sh -c "echo \"Container started\" && while sleep 1; do :; done"'

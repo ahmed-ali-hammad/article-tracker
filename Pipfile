@@ -6,6 +6,10 @@ name = "pypi"
 [packages]
 flask = "*"
 alembic = "*"
+sqlalchemy = "*"
+pydantic = "*"
+pydantic-settings = "*"
+flask-sqlalchemy = "*"
 
 [dev-packages]
 isort = "*"

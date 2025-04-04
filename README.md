@@ -49,10 +49,12 @@ $ pipenv shell  # spawns a shell within the virtualenv
 ```
 
 
-### ▶️ Running the webapp
+### ▶️ Running the API
 ```bash
 # Load environments variables
 $ source ./config/.env.example
+
+$ flask --app src/api/main run --debug
 ```
 
 - [API Docs]()
