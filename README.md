@@ -58,8 +58,8 @@ $ python run.py
 $ watchmedo auto-restart --pattern="*.py" --recursive -- python run.py  # to reload on save
 ```
 
-- [API Docs]()
-- [Healthcheck endpoints]()
+- [API Docs](http://localhost:5555/openapi/swagger)
+- [Healthcheck endpoints](http://localhost:5555/health)
 
 
 ### Database Migrations
@@ -105,3 +105,4 @@ $ pipenv uninstall package  --categories dev-packages # uninstall a dev package
 - [Flask](https://flask.palletsprojects.com/en/stable/) - Web Framework.
 - [PostgreSQL](https://www.postgresql.org/) - Database.
 - [Alembic](https://alembic.sqlalchemy.org/en/latest/) - Database Migration.
+- [flask-openapi3](https://luolingchun.github.io/flask-openapi3/v4.x/) - API Documentation
