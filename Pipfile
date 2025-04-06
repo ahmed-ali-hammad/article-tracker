@@ -15,6 +15,7 @@ flask-openapi3 = {extras = ["async"], version = "*"}
 requests-html = "*"
 lxml = {extras = ["html_clean"], version = "*"}
 asyncpg = "*"
+apscheduler = "*"
 
 [dev-packages]
 isort = "*"

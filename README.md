@@ -46,7 +46,6 @@ Otherwise you will need to start the docker compose environment `docker compose 
 $ docker compose up
 $ docker exec -it article-tracker-dev /bin/bash   # spawns a shell within the docker container
 $ pipenv shell  # spawns a shell within the virtualenv 
-$ pip install -e . --config-settings editable_mode=compat
 ```
 
 ### ▶️ Running the API
@@ -54,6 +53,7 @@ $ pip install -e . --config-settings editable_mode=compat
 # Load environments variables
 $ source ./config/.env.example
 
+# To run the application, you can use one of the following commands:
 $ python run.py
 $ watchmedo auto-restart --pattern="*.py" --recursive -- python run.py  # to reload on save
 ```
@@ -107,3 +107,4 @@ $ pipenv uninstall package  --categories dev-packages # uninstall a dev package
 - [PostgreSQL](https://www.postgresql.org/) - Database.
 - [Alembic](https://alembic.sqlalchemy.org/en/latest/) - Database Migration.
 - [Requests-HTML](https://requests.readthedocs.io/projects/requests-html/en/latest/) - For web scraping and HTML parsing
+- [APScheduler](https://apscheduler.readthedocs.io/) - Python Scheduler

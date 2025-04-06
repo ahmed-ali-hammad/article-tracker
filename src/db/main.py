@@ -1,16 +1,14 @@
-import logging
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+from sqlalchemy.pool import NullPool
 from sqlalchemy.sql import text
 from src.config import Config
+from src.log_utils import _logger
 
-_logger = logging.getLogger(__name__)
-
-
-engine = create_async_engine(Config.ASYNC_DATABASE_URI, echo=False)
-async_session = async_sessionmaker(bind=engine, expire_on_commit=False)
+engine = create_async_engine(Config.ASYNC_DATABASE_URI, poolclass=NullPool)
+async_session = async_sessionmaker(bind=engine, expire_on_commit=True)
 
 
 @asynccontextmanager
@@ -25,7 +23,10 @@ async def get_async_db_session() -> AsyncGenerator[AsyncSession]:
         AsyncSession: database session
     """
     async with async_session() as session:
-        yield session
+        try:
+            yield session
+        finally:
+            await session.close()
 
 
 def check_db_connection(session) -> bool:

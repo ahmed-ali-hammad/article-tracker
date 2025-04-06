@@ -3,9 +3,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.db.models import Article, ArticleDetail
 
 
-class ArticleService:
+class ArticleRepository:
     """
-    A service class for handling operations related to articles and their details.
+    A class for handling db operations related to articles and their details.
     """
 
     @staticmethod
@@ -48,7 +48,7 @@ class ArticleService:
         Returns:
             Article: The existing or newly created article.
         """
-        article = await ArticleService.find_article_by_url(
+        article = await ArticleRepository.find_article_by_url(
             session=session, article_url=article_url
         )
         if article:
@@ -110,7 +110,7 @@ class ArticleService:
         Returns:
             ArticleDetail: The existing or newly created article detail.
         """
-        article_detail = await ArticleService.find_article_detail(
+        article_detail = await ArticleRepository.find_article_detail(
             session=session, article_id=article_id, timestamp=timestamp
         )
         if article_detail:
@@ -127,3 +127,6 @@ class ArticleService:
         await session.commit()
 
         return new_article_detail
+
+
+article_repository = ArticleRepository()
