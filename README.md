@@ -46,8 +46,8 @@ Otherwise you will need to start the docker compose environment `docker compose 
 $ docker compose up
 $ docker exec -it article-tracker-dev /bin/bash   # spawns a shell within the docker container
 $ pipenv shell  # spawns a shell within the virtualenv 
+$ pip install -e . --config-settings editable_mode=compat
 ```
-
 
 ### ▶️ Running the API
 ```bash
@@ -59,14 +59,14 @@ $ watchmedo auto-restart --pattern="*.py" --recursive -- python run.py  # to rel
 ```
 
 - [API Docs](http://localhost:5555/openapi/swagger)
-- [Healthcheck endpoints](http://localhost:5555/health)
+- [Healthcheck endpoint](http://localhost:5555/health)
 
 
 ### Database Migrations
 
 ```bash
 # init the migrations folder
-$ alembic init -t async migrations  
+$ alembic init migrations  
 
 # create a new migration version
 $ alembic revision --autogenerate -m "message"  
@@ -103,6 +103,7 @@ $ pipenv uninstall package  --categories dev-packages # uninstall a dev package
 
 ## ⛏️ Built Using <a name = "built_using"></a>
 - [Flask](https://flask.palletsprojects.com/en/stable/) - Web Framework.
+- [flask-openapi3](https://luolingchun.github.io/flask-openapi3/v4.x/) - API Documentation
 - [PostgreSQL](https://www.postgresql.org/) - Database.
 - [Alembic](https://alembic.sqlalchemy.org/en/latest/) - Database Migration.
-- [flask-openapi3](https://luolingchun.github.io/flask-openapi3/v4.x/) - API Documentation
+- [Requests-HTML](https://requests.readthedocs.io/projects/requests-html/en/latest/) - For web scraping and HTML parsing

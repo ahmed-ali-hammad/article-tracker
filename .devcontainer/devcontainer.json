@@ -6,6 +6,7 @@
 	"dockerComposeFile": "../docker-compose.yml",
 	"service": "dev",
 	"runServices": [],
+	"postStartCommand": "~/.local/share/virtualenvs/article-tracker/bin/pip install -e . --config-settings editable_mode=compat",
 	"customizations": {
         "vscode": {
             "settings": {
