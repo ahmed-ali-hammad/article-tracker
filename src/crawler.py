@@ -1,18 +1,10 @@
-import asyncio
-import logging
 from datetime import datetime
 
 from requests_html import AsyncHTMLSession, Element, HTMLResponse
 from sqlalchemy.orm import Session
 from src.db.main import get_async_db_session
-from src.domain.service import ArticleService
-
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
-)
-_logger = logging.getLogger(__name__)
-
-article_service = ArticleService()
+from src.db.repository import ArticleRepository, article_repository
+from src.log_utils import _logger
 
 
 class TagesschauCrawler:
@@ -20,16 +12,16 @@ class TagesschauCrawler:
     A crawler for scraping articles from the Tagesschau website 'https://www.tagesschau.de/'.
     """
 
-    def __init__(self, article_service: ArticleService, db_session: Session):
+    def __init__(self, article_repository: ArticleRepository, db_session: Session):
         """
         Initializes the TagesschauCrawler instance.
 
         Args:
-            article_service (ArticleService): Service for managing article-related operations.
+            article_repository (ArticleRepository): Service for managing article-related operations.
             db_session: The database session for interacting with the database.
         """
         self.async_request_html_session: AsyncHTMLSession | None = None
-        self.article_service = article_service
+        self.article_repository = article_repository
         self.db_session = db_session
 
     async def initialize_async_request_html_session(self) -> None:
@@ -57,7 +49,6 @@ class TagesschauCrawler:
         """
         Entry point to run the crawler.
         """
-        await self.initialize_async_request_html_session()
         articles = await self.fetch_article_sections("https://www.tagesschau.de/")
         await self.process_articles(articles=articles)
 
@@ -117,7 +108,7 @@ class TagesschauCrawler:
                     f"Saving article if it does not exist | Topline: '{topline.text}'."
                 )
 
-                article = await self.article_service.get_or_create_article(
+                article = await self.article_repository.get_or_create_article(
                     session=self.db_session,
                     topline=topline.text,
                     headline=headline.text,
@@ -143,6 +134,8 @@ class TagesschauCrawler:
         Returns:
             HTMLResponse: The response object containing the HTML content of the page.
         """
+        await self.initialize_async_request_html_session()
+
         _logger.info(f"Fetching URL: {url}")
         response = await self.async_request_html_session.get(url)
         _logger.info(f"Fetched URL: {url} with status code {response.status_code}")
@@ -210,7 +203,7 @@ class TagesschauCrawler:
             f"Saving article_detail if it does not exist | for article_id: {article_id} | Topline: '{topline.text}'."
         )
 
-        await self.article_service.get_or_create_article_detail(
+        await self.article_repository.get_or_create_article_detail(
             session=self.db_session,
             article_id=article_id,
             topline=topline.text,
@@ -253,13 +246,29 @@ class TagesschauCrawler:
         return epoch_time
 
 
-if __name__ == "__main__":
+async def run_full_tagesschau_crawler() -> None:
+    """
+    Initializes and runs the Tagesschau web crawler.
 
-    async def main():
-        async with get_async_db_session() as session:
-            tagesschau_crawler = TagesschauCrawler(
-                article_service=article_service, db_session=session
-            )
-            await tagesschau_crawler.run()
+    This function:
+    - Establishes an asynchronous database session using `get_async_db_session()`.
+    - Creates an instance of the `TagesschauCrawler` with the provided article service and database session.
+    - Executes the crawling process to gather data (e.g., articles) from Tagesschau.
+    """
+    async with get_async_db_session() as session:
+        tagesschau_crawler = TagesschauCrawler(
+            article_repository=article_repository, db_session=session
+        )
+        await tagesschau_crawler.run()
 
-    asyncio.run(main())
+
+async def run_single_tagesschau_article_crawler(
+    article_url: str, article_id: int
+) -> None:
+    async with get_async_db_session() as session:
+        tagesschau_crawler = TagesschauCrawler(
+            article_repository=article_repository, db_session=session
+        )
+        await tagesschau_crawler.process_article_detail(
+            url=article_url, article_id=article_id
+        )
