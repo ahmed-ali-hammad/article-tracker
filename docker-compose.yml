@@ -17,6 +17,6 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=article
+      - POSTGRES_DB=article_data
     volumes:
       - ./db_mount:/var/lib/postgresql/data
