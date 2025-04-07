@@ -7,3 +7,11 @@ class IntervalQuery(BaseModel):
 
 class ArticleQuery(BaseModel):
     article_url: str
+
+
+class ArticleDetailQuery(BaseModel):
+    id: int
+
+
+class SearchQuery(BaseModel):
+    keyword: str

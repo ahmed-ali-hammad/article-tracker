@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "8dfa6c2d8b6817868c38679efd67414afdc1db88107b078df5ed2fb88b148f66"
+            "sha256": "f2c5d814f447b35099a2bd16c8e22a4824f2bb4a69a9006cd2e84c2af7b4d2eb"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -285,23 +285,6 @@
             ],
             "markers": "python_version >= '3.9'",
             "version": "==4.1.0"
-        },
-        "flask-openapi3-swagger": {
-            "hashes": [
-                "sha256:462bcf84ab1880d1b95535d563387819535d0ca058fada1fdf34fe77e2eb889d",
-                "sha256:d84d35fd99a7e6cf6c9cb507240a72ac189528df166b31e2c96a13023f275960"
-            ],
-            "markers": "python_version >= '3.8'",
-            "version": "==5.20.6"
-        },
-        "flask-sqlalchemy": {
-            "hashes": [
-                "sha256:4ba4be7f419dc72f4efd8802d69974803c37259dd42f3913b0dcf75c9447e0a0",
-                "sha256:e4b68bb881802dda1a7d878b2fc84c06d1ee57fb40b874d3dc97dabfa36b8312"
-            ],
-            "index": "pypi",
-            "markers": "python_version >= '3.8'",
-            "version": "==3.1.1"
         },
         "greenlet": {
             "hashes": [
@@ -642,6 +625,23 @@
             ],
             "markers": "python_version >= '3.9'",
             "version": "==3.0.2"
+        },
+        "marshmallow": {
+            "hashes": [
+                "sha256:3350409f20a70a7e4e11a27661187b77cdcaeb20abca41c1454fe33636bea09c",
+                "sha256:e6d8affb6cb61d39d26402096dc0aee12d5a26d490a121f118d2e81dc0719dc6"
+            ],
+            "index": "pypi",
+            "markers": "python_version >= '3.9'",
+            "version": "==3.26.1"
+        },
+        "packaging": {
+            "hashes": [
+                "sha256:09abb1bccd265c01f4a3aa3f7a7db064b36514d2cba19a2f694fe6150451a759",
+                "sha256:c228a6dc5e932d346bc5739379109d49e8853dd8223571c7c5b55260edc0b97f"
+            ],
+            "markers": "python_version >= '3.8'",
+            "version": "==24.2"
         },
         "parse": {
             "hashes": [
