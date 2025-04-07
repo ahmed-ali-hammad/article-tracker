@@ -116,8 +116,10 @@ class TagesschauCrawler:
                     article_url=url,
                 )
 
+                article_id = article.id
+
                 # process article detail
-                await self.process_article_detail(url=url, article_id=article.id)
+                await self.process_article_detail(url=url, article_id=article_id)
 
             except Exception as e:
                 _logger.error(f"Error processing article {index}: {e}", exc_info=True)

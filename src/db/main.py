@@ -7,8 +7,7 @@ from sqlalchemy.sql import text
 from src.config import Config
 from src.log_utils import _logger
 
-engine = create_async_engine(Config.ASYNC_DATABASE_URI, poolclass=NullPool)
-async_session = async_sessionmaker(bind=engine, expire_on_commit=True)
+async_db_engine = create_async_engine(Config.ASYNC_DATABASE_URI, poolclass=NullPool)
 
 
 @asynccontextmanager
@@ -22,6 +21,7 @@ async def get_async_db_session() -> AsyncGenerator[AsyncSession]:
     Returns:
         AsyncSession: database session
     """
+    async_session = async_sessionmaker(bind=async_db_engine, expire_on_commit=True)
     async with async_session() as session:
         try:
             yield session
@@ -29,7 +29,20 @@ async def get_async_db_session() -> AsyncGenerator[AsyncSession]:
             await session.close()
 
 
-def check_db_connection(session) -> bool:
+async def dispose_db_engine() -> None:
+    """
+    Asynchronously disposes the database engine connection.
+
+    This function ensures that the database engine is properly closed and any
+    associated resources are cleaned up before the application shuts down or
+    the engine is no longer needed.
+    """
+    _logger.info("Disposing database engine...")
+    await async_db_engine.dispose()
+    _logger.info("Database engine disposed successfully.")
+
+
+async def check_db_connection(session: AsyncSession) -> bool:
     """
     Simple check for database connection using a SELECT query.
 
@@ -40,7 +53,7 @@ def check_db_connection(session) -> bool:
         bool: True if the DB is reachable, False otherwise.
     """
     try:
-        session.execute(text("SELECT 1"))
+        await session.execute(text("SELECT 1"))
         return True
     except Exception as e:
         _logger.error(f"Database connection error: {e}")
