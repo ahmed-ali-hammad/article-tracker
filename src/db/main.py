@@ -7,7 +7,6 @@ from sqlalchemy.sql import text
 from src.config import Config
 from src.log_utils import _logger
 
-
 async_db_engine = create_async_engine(Config.ASYNC_DATABASE_URI, poolclass=NullPool)
 
 
