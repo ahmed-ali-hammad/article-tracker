@@ -62,6 +62,8 @@ class ArticleRepository:
         )
         session.add(new_article)
         await session.commit()
+
+        await session.refresh(new_article)
         return new_article
 
     @staticmethod
@@ -126,6 +128,7 @@ class ArticleRepository:
         session.add(new_article_detail)
         await session.commit()
 
+        await session.refresh(new_article_detail)
         return new_article_detail
 
 
