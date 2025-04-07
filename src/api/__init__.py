@@ -34,6 +34,9 @@ def create_app(config_class=Config):
 
     app.config.from_object(config_class)
 
+    # Required to preserve field order when using Marshmallow for serialization
+    app.json.sort_keys = False
+
     app.register_api(controller_bp)
     app.register_api(explorer_bp)
 

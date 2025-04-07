@@ -9,13 +9,13 @@ alembic = "*"
 sqlalchemy = "*"
 pydantic = "*"
 pydantic-settings = "*"
-flask-sqlalchemy = "*"
 psycopg2 = "*"
 flask-openapi3 = {extras = ["async"], version = "*"}
 requests-html = "*"
 lxml = {extras = ["html_clean"], version = "*"}
 asyncpg = "*"
 apscheduler = "*"
+marshmallow = "*"
 
 [dev-packages]
 isort = "*"
