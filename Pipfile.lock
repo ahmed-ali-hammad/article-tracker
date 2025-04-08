@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "f2c5d814f447b35099a2bd16c8e22a4824f2bb4a69a9006cd2e84c2af7b4d2eb"
+            "sha256": "f0d3a6a48b39ecf69b7ae65f3adaf55c4ad16028a80ef5724a8cb12ef0307fc8"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -258,6 +258,13 @@
             "markers": "python_version >= '3.9'",
             "version": "==1.3.0"
         },
+        "dotenv": {
+            "hashes": [
+                "sha256:29cf74a087b31dafdb5a446b6d7e11cbce8ed2741540e2339c69fbef92c94ce9"
+            ],
+            "index": "pypi",
+            "version": "==0.9.9"
+        },
         "fake-useragent": {
             "hashes": [
                 "sha256:1363d8be4934627f80a84c21cce72d33c5da650a9f1fd7398520b1edb6ecd873",
@@ -277,7 +284,8 @@
         },
         "flask-openapi3": {
             "extras": [
-                "async"
+                "async",
+                "swagger"
             ],
             "hashes": [
                 "sha256:1f5efdbfeca3785d3389d1772127df9e0578130f12612ca3d2d04c90e3f8f4b4",
@@ -285,6 +293,14 @@
             ],
             "markers": "python_version >= '3.9'",
             "version": "==4.1.0"
+        },
+        "flask-openapi3-swagger": {
+            "hashes": [
+                "sha256:462bcf84ab1880d1b95535d563387819535d0ca058fada1fdf34fe77e2eb889d",
+                "sha256:d84d35fd99a7e6cf6c9cb507240a72ac189528df166b31e2c96a13023f275960"
+            ],
+            "markers": "python_version >= '3.8'",
+            "version": "==5.20.6"
         },
         "greenlet": {
             "hashes": [
@@ -780,15 +796,6 @@
             ],
             "markers": "python_version >= '3.9'",
             "version": "==2.33.1"
-        },
-        "pydantic-settings": {
-            "hashes": [
-                "sha256:81942d5ac3d905f7f3ee1a70df5dfb62d5569c12f51a5a647defc1c3d9ee2e9c",
-                "sha256:d5c663dfbe9db9d5e1c646b2e161da12f0d734d422ee56f567d0ea2cee4e8585"
-            ],
-            "index": "pypi",
-            "markers": "python_version >= '3.8'",
-            "version": "==2.8.1"
         },
         "pyee": {
             "hashes": [

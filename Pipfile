@@ -8,14 +8,14 @@ flask = "*"
 alembic = "*"
 sqlalchemy = "*"
 pydantic = "*"
-pydantic-settings = "*"
 psycopg2 = "*"
-flask-openapi3 = {extras = ["async"], version = "*"}
 requests-html = "*"
 lxml = {extras = ["html_clean"], version = "*"}
 asyncpg = "*"
 apscheduler = "*"
 marshmallow = "*"
+dotenv = "*"
+flask-openapi3 = {extras = ["swagger", "async"], version = "*"}
 
 [dev-packages]
 isort = "*"

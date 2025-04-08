@@ -11,7 +11,7 @@ from src.log_utils import _logger
 class CrawlerScheduler:
     def __init__(self, job_id):
         self.job_id = job_id
-        self.current_interval = 1
+        self.current_interval = 60  # An Hour
         self.scheduler = None
         self.loop = None
         self.thread = None
@@ -28,7 +28,10 @@ class CrawlerScheduler:
             # Creating an AsyncIOScheduler and binding it to the newly created event loop
             self.scheduler = AsyncIOScheduler(event_loop=self.loop)
             self.scheduler.add_job(
-                run_full_tagesschau_crawler, "interval", minutes=1, id=self.job_id
+                run_full_tagesschau_crawler,
+                "interval",
+                minutes=self.current_interval,
+                id=self.job_id,
             )
             self.scheduler.start()
             try:
