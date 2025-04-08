@@ -10,19 +10,6 @@ controller_bp = APIBlueprint("controller", __name__, url_prefix="/controller")
 controller_tag = Tag(name="Controller", description=" ")
 
 
-# @controller_bp.before_request
-# def store_scheduler_in_context() -> None:
-#     """
-#     Stores tagesschau_main_page_scheduler instance in the Flask `g` context
-#     before each request. This makes the scheduler accessible during the request
-#     lifecycle.
-
-#     The scheduler is stored as `g.tagesschau_main_page_scheduler`.
-#     """
-#     g.article_service = article_service
-#     g.tagesschau_main_page_scheduler = tagesschau_main_page_scheduler
-
-
 @controller_bp.post(
     "/crawl/overview-page/start",
     tags=[controller_tag],
