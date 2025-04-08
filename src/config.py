@@ -1,13 +1,21 @@
-class Config:
-    SQLALCHEMY_DATABASE_URI = (
-        "postgresql://postgres:password@article-tracker-db:5432/article_data"
-    )
-    ASYNC_DATABASE_URI = (
-        "postgresql+asyncpg://postgres:password@article-tracker-db:5432/article_data"
-    )
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SECRET_KEY = "super_secure"
+import os
+from pathlib import Path
 
-    FLASK_RUN_HOST = "0.0.0.0"
-    FLASK_RUN_PORT = 5000
-    DEBUG = True
+from dotenv import load_dotenv
+
+# Path for the .env file
+env_path = Path(__file__).resolve().parent.parent / "conf" / ".env.example"
+
+# Load environment variables from the .env file
+load_dotenv(env_path)
+
+
+class Config:
+    """Base configuration class to load environment variables."""
+
+    DATABASE_URI = os.getenv("DATABASE_URI")
+    ASYNC_DATABASE_URI = os.getenv("ASYNC_DATABASE_URI")
+    SECRET_KEY = os.getenv("SECRET_KEY")
+    FLASK_RUN_HOST = os.getenv("FLASK_RUN_HOST")
+    FLASK_RUN_PORT = os.getenv("FLASK_RUN_PORT")
+    DEBUG = os.getenv("DEBUG")

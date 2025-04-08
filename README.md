@@ -17,18 +17,24 @@
 - [Built Using](#built-using)
 
 ## 🧐 About <a name = "about"></a>
-**Article Tracker** is a system designed to crawl, track, and analyze online articles of the [Tageschau](https://www.tagesschau.de/). It consists of:
-- A web crawler that fetches and updates article content periodically.
+**Article Tracker** is a system designed to crawl the articles from [Tageschau](https://www.tagesschau.de/). And it consists of:
+- A web crawler that periodically fetches the articles content.
 - A PostgreSQL database to store articles and maintain version history.
 - Two Flask APIs:
     - Controller API – Manages the crawler (triggering crawls, adjusting frequency, etc.).
-    - Explorer API – Allows searching and tracking changes in articles over time.
+    - Explorer API – Allows listing, searching and tracking changes in articles over time.
 
 Features
-- Periodic and on-demand article crawling
-- Version tracking for content updates
-- Search functionality for latest articles
-- API-based control over crawling behavior
+- Periodic and on-demand article crawling.
+- Version tracking for content updates.
+- Search functionality.
+- API-based control over crawling behavior.
+
+
+### Database Schema
+<div style="text-align: center;">
+  <img src="images/schema.png" alt="Diagram" width="600" />
+</div>
 
 ## 🏁 Getting Started <a name = "getting_started"></a>
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
@@ -50,16 +56,14 @@ $ pipenv shell  # spawns a shell within the virtualenv
 
 ### ▶️ Running the API
 ```bash
-# Load environments variables
-$ source ./config/.env.example
-
 # To run the application, you can use one of the following commands:
 $ python run.py
-$ watchmedo auto-restart --pattern="*.py" --recursive -- python run.py  # to reload on save
+$ watchmedo auto-restart --pattern="*.py" --recursive -- python run.py  # auto reload on save
 ```
 
+Endpoints:
 - [API Docs](http://localhost:5555/openapi/swagger)
-- [Healthcheck endpoint](http://localhost:5555/health)
+- [Healthcheck](http://localhost:5555/health)
 
 
 ### Database Migrations
@@ -78,8 +82,9 @@ $ alembic upgrade head
 *Note: If you're setting up this project, you only need to apply the existing migrations, as they have already been generated.*
 
 ### 🧪 Running the tests <a name = "tests"></a>
-- [pytest](https://docs.pytest.org/) is used to run unit and integration tests.
+- [pytest](https://docs.pytest.org/) is used to run unit and integration tests.   
 
+🚧 Work in Progress
 
 ### Code Style & Linting
 The following tools are run during pipelines to enforce code style and quality.
