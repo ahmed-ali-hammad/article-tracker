@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.crawler import run_single_tagesschau_article_crawler
 from src.db.models import Article, ArticleDetail
-from src.db.repository import article_repository
+from src.db.repository import ArticleRepository, article_repository
 from src.exceptions import ArticleNotFoundException
 from src.scheduler import CrawlerScheduler
 
@@ -24,7 +24,9 @@ class ArticleService:
 
     @staticmethod
     async def trigger_single_article_crawl(
-        session: AsyncSession, article_url: str
+        session: AsyncSession,
+        article_url: str,
+        article_repository: ArticleRepository = article_repository,
     ) -> None:
         """
         Triggers crawling for a single article by its URL.
@@ -32,6 +34,8 @@ class ArticleService:
         Args:
             session (AsyncSession): The database session used to fetch the article.
             article_url (str): The URL of the article to crawl.
+            article_repository (ArticleRepository): The repository used to fetch the article
+                (default is the global `article_repository`).
 
         Raises:
             ArticleNotFoundException: If the article is not found in the database.
