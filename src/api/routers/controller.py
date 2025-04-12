@@ -122,7 +122,7 @@ async def change_crawler_schedule_interval(query: IntervalQuery):
         if minutes < 1:
             return {"message": "Interval must be at least 1 minute"}, 400
 
-        interval_changed = await article_service.change_scheduler_interval(
+        interval_changed = await article_service.update_scheduler_interval(
             tagesschau_main_page_scheduler, minutes
         )
 

@@ -23,18 +23,17 @@ class ArticleRepository:
         Returns:
             list[Article]: A list of all `Article` objects, each including its related `ArticleDetail` records.
         """
-        # selectinload to do the JOIN in the same query
         statement = select(Article).options(selectinload(Article.details))
         result = await session.execute(statement)
         articles = result.scalars().all()
         return articles
 
     @staticmethod
-    async def find_article_by_url(
+    async def get_article_by_url(
         session: AsyncSession, article_url: str
     ) -> Article | None:
         """
-        Find an article by its URL.
+        Get an article by its URL.
 
         Args:
             session (AsyncSession): The asynchronous database session.
@@ -69,7 +68,7 @@ class ArticleRepository:
         Returns:
             Article: The existing or newly created article.
         """
-        article = await ArticleRepository.find_article_by_url(
+        article = await ArticleRepository.get_article_by_url(
             session=session, article_url=article_url
         )
         if article:
@@ -84,15 +83,16 @@ class ArticleRepository:
         session.add(new_article)
         await session.commit()
 
+        # Reload the object from the database to ensure auto-generated fields (ID) are available.
         await session.refresh(new_article)
         return new_article
 
     @staticmethod
-    async def find_article_detail(
+    async def get_article_detail_by_article_id_and_timestamp(
         session: AsyncSession, article_id: int, timestamp: int
     ) -> ArticleDetail | None:
         """
-        Find article_detail by article_id and timestamp.
+        Get an article_detail by article_id and timestamp.
 
         Args:
             session (AsyncSession): The asynchronous database session.
@@ -110,7 +110,7 @@ class ArticleRepository:
         return article_detail
 
     @staticmethod
-    async def find_article_detail_by_id(
+    async def get_article_detail_by_id(
         session: AsyncSession, article_detail_id: int
     ) -> ArticleDetail | None:
         """
@@ -129,12 +129,12 @@ class ArticleRepository:
         return article_detail
 
     @staticmethod
-    async def find_article_detail_by_keyword(
+    async def search_article_details_by_keyword(
         session: AsyncSession, keyword: str
     ) -> list[ArticleDetail]:
         """
-        Searches for article details containing the given keyword and returns only
-        the latest version (highest ID) for each article.
+        Searches for articles_detail containing a given keyword.
+        it returns only the latest version (highest ID) for each article.
 
         This query uses PostgreSQL's `DISTINCT ON` strategy to ensure that only the
         most recent ArticleDetail (based on ID) per `article_id` is returned when
@@ -196,8 +196,10 @@ class ArticleRepository:
         Returns:
             ArticleDetail: The existing or newly created article detail.
         """
-        article_detail = await ArticleRepository.find_article_detail(
-            session=session, article_id=article_id, timestamp=timestamp
+        article_detail = (
+            await ArticleRepository.get_article_detail_by_article_id_and_timestamp(
+                session=session, article_id=article_id, timestamp=timestamp
+            )
         )
         if article_detail:
             return article_detail
@@ -212,6 +214,7 @@ class ArticleRepository:
         session.add(new_article_detail)
         await session.commit()
 
+        # Reload the object from the database to ensure auto-generated fields (ID) are available.
         await session.refresh(new_article_detail)
         return new_article_detail
 

@@ -9,7 +9,7 @@ from src.log_utils import _logger
 
 
 class CrawlerScheduler:
-    def __init__(self, job_id):
+    def __init__(self, job_id: str) -> None:
         self.job_id = job_id
         self.current_interval = 60  # An Hour
         self.scheduler = None
@@ -17,7 +17,7 @@ class CrawlerScheduler:
         self.thread = None
         self.enabled = True
 
-    def start(self):
+    def start(self) -> None:
         """Start the scheduler in a background thread"""
 
         def _run_scheduler():
@@ -49,11 +49,11 @@ class CrawlerScheduler:
         # Start the background thread
         self.thread.start()
 
-    def is_running(self):
+    def is_running(self) -> bool:
         """Checks if the scheduler exists and is currently running"""
         return self.scheduler and self.scheduler.running
 
-    def trigger_now(self):
+    def trigger_now(self) -> bool:
         """Trigger the crawler immediately"""
         if not self.is_running():
             _logger.warning("Scheduler not running. Starting scheduler...")
@@ -73,7 +73,7 @@ class CrawlerScheduler:
             )
             return False
 
-    def update_interval(self, minutes: int):
+    def update_interval(self, minutes: int) -> bool:
         """Update the interval for the scheduled job"""
         if not self.is_running():
             _logger.info("Scheduler not running. Starting scheduler...")
@@ -98,7 +98,7 @@ class CrawlerScheduler:
             )
             return False
 
-    def enable_job(self):
+    def enable_job(self) -> bool:
         """Enable (resume) the scheduled job"""
         if not self.is_running():
             self.start()
@@ -113,7 +113,7 @@ class CrawlerScheduler:
             _logger.warning(f"Failed to enable job: job '{self.job_id}' not found.")
             return False
 
-    def disable_job(self):
+    def disable_job(self) -> bool:
         """Disable (pause) the scheduled job"""
         if not self.is_running():
             return False
@@ -128,7 +128,7 @@ class CrawlerScheduler:
             _logger.warning(f"Failed to disable job: job '{self.job_id}' not found.")
             return False
 
-    def job_status(self):
+    def job_status(self) -> dict:
         """Get current job status"""
         status = {
             "enabled": self.enabled,
@@ -138,7 +138,7 @@ class CrawlerScheduler:
         _logger.info(f"job: {self.job_id} - status: {status}")
         return status
 
-    def stop(self):
+    def stop(self) -> None:
         """Stop the scheduler gracefully"""
         if self.scheduler:
             _logger.info("Shutting down the scheduler...")

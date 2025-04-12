@@ -12,7 +12,9 @@ class TagesschauCrawler:
     A crawler for scraping articles from the Tagesschau website 'https://www.tagesschau.de/'.
     """
 
-    def __init__(self, article_repository: ArticleRepository, db_session: Session):
+    def __init__(
+        self, article_repository: ArticleRepository, db_session: Session
+    ) -> None:
         """
         Initializes the TagesschauCrawler instance.
 
@@ -171,11 +173,11 @@ class TagesschauCrawler:
             _logger.info(f"Skipping article {index} – not a news link.")
             return False
 
-        if label and label.text in ["Bilder"]:
-            _logger.info(f"Skipping article {index} – only pictures.")
+        if label and label.text.lower() in {"bilder", "podcast"}:
+            _logger.info(f"Skipping article {index} – only pictures or podcast.")
             return False
 
-        if topline.text in ["Spenden", "Wettervorhersage Deutschland", "lotto"]:
+        if topline.text.lower() in {"spenden", "wettervorhersage deutschland", "lotto"}:
             _logger.info(f"Skipping article {index} – filtered by topline.")
             return False
 

@@ -7,6 +7,11 @@ from src.scheduler import CrawlerScheduler
 
 
 class ArticleService:
+    """
+    A service class to encapsulate logic and act as an intermediary between
+    controllers/APIs and data repositories.
+    """
+
     @staticmethod
     async def trigger_full_crawl_now(scheduler: CrawlerScheduler) -> bool:
         """
@@ -34,13 +39,13 @@ class ArticleService:
         Args:
             session (AsyncSession): The database session used to fetch the article.
             article_url (str): The URL of the article to crawl.
-            article_repository (ArticleRepository): The repository used to fetch the article
-                (default is the global `article_repository`).
+            article_repository (ArticleRepository): Repository handling data access operations.
+               Defaults to the globally configured `article_repository` instance.
 
         Raises:
             ArticleNotFoundException: If the article is not found in the database.
         """
-        article = await article_repository.find_article_by_url(
+        article = await article_repository.get_article_by_url(
             session=session, article_url=article_url
         )
 
@@ -64,7 +69,7 @@ class ArticleService:
         return scheduler.current_interval
 
     @staticmethod
-    async def change_scheduler_interval(
+    async def update_scheduler_interval(
         scheduler: CrawlerScheduler, minutes: int
     ) -> bool:
         """
@@ -119,12 +124,17 @@ class ArticleService:
         return scheduler.disable_job()
 
     @staticmethod
-    async def fetch_all_articles(session: AsyncSession) -> list[Article]:
+    async def retrieve_all_articles(
+        session: AsyncSession,
+        article_repository: ArticleRepository = article_repository,
+    ) -> list[Article]:
         """
         This method retrieves a list of all articles stored in the database.
 
         Args:
             session (AsyncSession): The SQLAlchemy async session to use for querying.
+            article_repository (ArticleRepository): Repository handling data access operations.
+               Defaults to the globally configured `article_repository` instance.
 
         Returns:
             list[Article]: A list of all `Article` objects from the database.
@@ -132,8 +142,10 @@ class ArticleService:
         return await article_repository.get_all_articles(session)
 
     @staticmethod
-    async def fetch_article_detail(
-        session: AsyncSession, article_detail_id: int
+    async def retrieve_article_by_id(
+        session: AsyncSession,
+        article_detail_id: int,
+        article_repository: ArticleRepository = article_repository,
     ) -> ArticleDetail | None:
         """
         Fetches the article detail for the given article_detail_id.
@@ -144,16 +156,22 @@ class ArticleService:
         Args:
             session (AsyncSession): The SQLAlchemy async session to use for querying.
             article_detail_id (int): The ID of the article detail to fetch.
+            article_repository (ArticleRepository): Repository handling data access operations.
+               Defaults to the globally configured `article_repository` instance.
 
         Returns:
             ArticleDetail | None: The matching `ArticleDetail` if found, otherwise None.
         """
-        return await article_repository.find_article_detail_by_id(
+        return await article_repository.get_article_detail_by_id(
             session, article_detail_id
         )
 
     @staticmethod
-    async def search_articles(session: AsyncSession, keyword: str) -> list[Article]:
+    async def search_articles_by_keyword(
+        session: AsyncSession,
+        keyword: str,
+        article_repository: ArticleRepository = article_repository,
+    ) -> list[Article]:
         """
         Searches for the latest version of articles containing the given keyword.
         This method delegates to the repository to find article details that match a keyword.
@@ -166,11 +184,15 @@ class ArticleService:
         Args:
             session (AsyncSession): The active SQLAlchemy async session.
             keyword (str): The keyword to search for.
+            article_repository (ArticleRepository): Repository handling data access operations.
+               Defaults to the globally configured `article_repository` instance.
 
         Returns:
             list[Article]: A list of Article instances with matching details.
         """
-        return await article_repository.find_article_detail_by_keyword(session, keyword)
+        return await article_repository.search_article_details_by_keyword(
+            session, keyword
+        )
 
 
 article_service = ArticleService()

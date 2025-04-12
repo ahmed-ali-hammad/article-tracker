@@ -1,6 +1,6 @@
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.db.models import Article
+from src.db.models import Article, ArticleDetail
 
 
 @pytest_asyncio.fixture
@@ -29,4 +29,20 @@ async def dummy_article():
         headline="Revolutionary Product Set to Transform the Industry",
         short_text="A global tech company unveils a game-changing product with innovative features, aiming to impact multiple sectors.",
         article_url="https://best.url",
+    )
+
+
+@pytest_asyncio.fixture
+async def dummy_article_detail(dummy_article):
+    return ArticleDetail(
+        id=1,
+        article_id=dummy_article.id,
+        topline="Tech Giant Announces New Innovation",
+        headline="Revolutionary Product Set to Transform the Industry",
+        text=(
+            "A global tech company unveils a game-changing product with innovative features, "
+            "aiming to impact multiple sectors. Researchers have unveiled a new AI model that "
+            "outperforms previous benchmarks in multiple domains."
+        ),
+        timestamp=1744454587,
     )
