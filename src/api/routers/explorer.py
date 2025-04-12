@@ -24,7 +24,7 @@ async def list_all_articles():
     """
     try:
         async with get_async_db_session() as session:
-            articles = await article_service.fetch_all_articles(session)
+            articles = await article_service.retrieve_all_articles(session)
 
             # Serializer
             schema = ArticleSchema(many=True)
@@ -65,7 +65,7 @@ async def get_article_detail(query: ArticleDetailQuery):
     article_detail_id = query.id
     try:
         async with get_async_db_session() as session:
-            article_detail = await article_service.fetch_article_detail(
+            article_detail = await article_service.retrieve_article_by_id(
                 session, article_detail_id
             )
 
@@ -114,7 +114,9 @@ async def articles_search(query: SearchQuery):
     keyword = query.keyword
     try:
         async with get_async_db_session() as session:
-            articles_details = await article_service.search_articles(session, keyword)
+            articles_details = await article_service.search_articles_by_keyword(
+                session, keyword
+            )
 
             # Serializer
             schema = ArticleDetailSchema(many=True)
