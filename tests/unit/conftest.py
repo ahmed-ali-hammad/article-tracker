@@ -1,5 +1,6 @@
 import pytest_asyncio
 from sqlalchemy.ext.asyncio import AsyncSession
+from src.crawler import TagesschauCrawler
 from src.db.models import Article, ArticleDetail
 
 
@@ -46,3 +47,13 @@ async def dummy_article_detail(dummy_article):
         ),
         timestamp=1744454587,
     )
+
+
+@pytest_asyncio.fixture
+async def tagesschau_crawler_fixture(
+    mock_article_repository, mock_get_async_db_session
+):
+    tagesschau_crawler = TagesschauCrawler(
+        mock_article_repository, mock_get_async_db_session
+    )
+    return tagesschau_crawler
