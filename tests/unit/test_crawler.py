@@ -135,3 +135,77 @@ class TestTagesschauCrawler:
 
         with pytest.raises(Exception, match="processing failed"):
             await tagesschau_crawler_fixture.run()
+
+    @pytest.mark.asyncio
+    async def test_fetch_article_sections_success(
+        self, mocker, tagesschau_crawler_fixture
+    ):
+
+        mock_html = mocker.MagicMock()
+        mock_html.find.return_value = ["article1", "article2"]
+
+        mock_page = mocker.AsyncMock()
+        mock_page.html = mock_html
+
+        mock_fetch_page = mocker.patch(
+            "src.crawler.TagesschauCrawler.fetch_page", return_value=mock_page
+        )
+
+        articles = await tagesschau_crawler_fixture.fetch_article_sections(
+            "https://www.tagesschau.de/"
+        )
+
+        assert articles == ["article1", "article2"]
+        mock_fetch_page.assert_awaited_once_with("https://www.tagesschau.de/")
+
+        mock_html.find.assert_called_once_with('[class="columns twelve teasergroup"]')
+
+    @pytest.mark.asyncio
+    async def test_fetch_article_sections_fetch_page_raises(
+        self, mocker, tagesschau_crawler_fixture
+    ):
+        mock_fetch_page = mocker.patch(
+            "src.crawler.TagesschauCrawler.fetch_page",
+            side_effect=Exception("Page fetch failed"),
+        )
+
+        with pytest.raises(Exception, match="Page fetch failed"):
+            await tagesschau_crawler_fixture.fetch_article_sections(
+                "https://www.tagesschau.de/"
+            )
+
+        mock_fetch_page.assert_awaited_once_with("https://www.tagesschau.de/")
+
+    @pytest.mark.asyncio
+    async def test_fetch_article_sections_no_html(
+        self, mocker, tagesschau_crawler_fixture
+    ):
+        mock_page = mocker.AsyncMock()
+        mock_page.html = None
+
+        mocker.patch("src.crawler.TagesschauCrawler.fetch_page", return_value=mock_page)
+
+        with pytest.raises(
+            AttributeError, match="'NoneType' object has no attribute 'find'"
+        ):
+            await tagesschau_crawler_fixture.fetch_article_sections(
+                "https://www.tagesschau.de/"
+            )
+
+    @pytest.mark.asyncio
+    async def test_fetch_article_sections_empty_find(
+        self, mocker, tagesschau_crawler_fixture
+    ):
+        mock_html = mocker.MagicMock()
+        mock_html.find.return_value = []
+
+        mock_page = mocker.AsyncMock()
+        mock_page.html = mock_html
+
+        mocker.patch("src.crawler.TagesschauCrawler.fetch_page", return_value=mock_page)
+
+        articles = await tagesschau_crawler_fixture.fetch_article_sections(
+            "https://www.tagesschau.de/"
+        )
+        assert articles == []
+        mock_html.find.assert_called_once_with('[class="columns twelve teasergroup"]')
