@@ -29,7 +29,7 @@ def run_api(host, port, debug):
         port (int): The port to run the app on.
         debug (bool): Whether to run the app in debug mode.
     """
-    app.run(host=host, port=port, debug=debug)
+    app.run(host=host, port=port, debug=debug, use_reloader=True)
 
 
 if __name__ == "__main__":
