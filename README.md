@@ -56,9 +56,7 @@ $ pipenv shell  # spawns a shell within the virtualenv
 
 ### ▶️ Running the API
 ```bash
-# To run the application, you can use one of the following commands:
 $ python run.py
-$ watchmedo auto-restart --pattern="*.py" --recursive -- python run.py  # auto reload on save
 ```
 
 Endpoints:
